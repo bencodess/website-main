@@ -74,7 +74,7 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
 .spotify-card {
     background:#102b45;
     border-radius:20px;
-    padding:20px;
+    padding:15px 20px;
     width:100%;
     max-width:380px;
     margin-top:25px;
@@ -83,27 +83,29 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
     border:1px solid #1DB954;
     box-shadow:0 0 20px #3399ff44;
     transition:0.3s;
+    align-items:center;
 }
 .spotify-card:hover { transform:translateY(-3px); }
 
 .spotify-cover img {
-    width:80px;
-    height:80px;
+    width:60px;
+    height:60px;
     border-radius:12px;
     object-fit:cover;
 }
 
 .s-info { display:flex; flex-direction:column; justify-content:center; flex:1; }
-.s-title { font-size:15px; font-weight:bold; color:#fff; }
+.s-title { font-size:15px; font-weight:bold; color:#fff; display:flex; align-items:center; gap:6px; }
 .s-artist { font-size:12px; opacity:0.8; margin-top:3px; }
 .progress-bar { width:100%; height:5px; background:#0b1a2a; border-radius:10px; overflow:hidden; margin-top:6px; }
 .progress { height:100%; background:#1DB954; width:0%; transition:width 0.2s; }
-.time { font-size:11px; opacity:0.6; margin-top:4px; display:flex; justify-content:space-between; }
+.time { font-size:11px; opacity:0.6; margin-top:4px; display:flex; justify-content:space-between; align-items:center; }
 
 /* Badges */
 .badges { display:flex; justify-content:center; gap:5px; margin-bottom:8px; }
-.badge img { width:18px; height:18px; }
+.badge img { width:20px; height:20px; }
 
+.spotify-logo { width:16px; height:16px; }
 </style>
 </head>
 <body>
@@ -151,7 +153,9 @@ async function updateLanyard() {
             const badgeURLs = {
                 1:"https://cdn.discordapp.com/badges/discord_employee.png", 
                 2:"https://cdn.discordapp.com/badges/partner.png",
-                3:"https://cdn.discordapp.com/badges/hypesquad.png"
+                4:"https://cdn.discordapp.com/badges/hypesquad_balance.png",
+                8:"https://cdn.discordapp.com/badges/hypesquad_brilliance.png",
+                64:"https://cdn.discordapp.com/badges/hypesquad_bravery.png"
             };
             for(const key in badgeURLs) {
                 if(flags & key) {
@@ -177,7 +181,7 @@ async function updateLanyard() {
                 <div class="spotify-card">
                     <div class="spotify-cover"><img src="${s.album_art_url}"></div>
                     <div class="s-info">
-                        <div class="s-title">${s.song}</div>
+                        <div class="s-title"><img class="spotify-logo" src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo">${s.song}</div>
                         <div class="s-artist">${s.artist}</div>
                         <div class="progress-bar"><div class="progress" style="width:${progressPercent}%;"></div></div>
                         <div class="time"><span>${formatTime(currentSeconds)}</span><span>${formatTime(totalSeconds)}</span></div>
@@ -196,7 +200,7 @@ function formatTime(sec){
 }
 
 updateLanyard();
-setInterval(updateLanyard,100);
+setInterval(updateLanyard,1000);
 </script>
 
 </body>
