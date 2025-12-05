@@ -2,217 +2,201 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Your Guns.lol Style Page</title>
+<title>Ben Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-    body {
-        margin: 0;
-        background: #0a0a0a;
-        font-family: 'Inter', sans-serif;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 40px 10px;
-        animation: fadeIn 1s ease;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+* { margin:0; padding:0; box-sizing:border-box; user-select:none; }
+body {
+    font-family:'Inter',sans-serif;
+    background:#0b1a2a;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:40px 10px;
+    transition: background 0.3s;
+}
 
-    .pfp {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        overflow: hidden;
-        box-shadow: 0 0 25px #00ff8899;
-        margin-bottom: 20px;
-        animation: glow 3s infinite alternate;
-    }
+.pfp {
+    width: 120px;
+    height: 120px;
+    border-radius:50%;
+    overflow:hidden;
+    margin-bottom:15px;
+    box-shadow:0 0 25px #3399ff88;
+    animation: glow 3s infinite alternate;
+}
+.pfp img { width:100%; height:100%; object-fit:cover; }
 
-    @keyframes glow {
-        from { box-shadow: 0 0 15px #00ff8844; }
-        to { box-shadow: 0 0 35px #00ff88; }
-    }
+@keyframes glow {
+    0% { box-shadow:0 0 15px #3399ff44; }
+    50% { box-shadow:0 0 35px #3399ff; }
+    100% { box-shadow:0 0 15px #3399ff44; }
+}
 
-    .pfp img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
+.tag { opacity:0.7; margin-bottom:12px; font-size:13px; text-align:center; }
 
-    h1 {
-        margin: 10px 0;
-        font-size: 28px;
-        text-align: center;
-        font-weight: 800;
-    }
+.links {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    max-width:380px;
+    margin-top:10px;
+}
 
-    .tag {
-        opacity: 0.7;
-        margin-bottom: 25px;
-        font-size: 14px;
-        text-align: center;
-    }
+.btn {
+    padding:10px 14px;
+    text-align:center;
+    background:#102b45;
+    border-radius:12px;
+    font-size:14px;
+    color:white;
+    text-decoration:none;
+    border:1px solid #3399ff;
+    transition:0.3s;
+    flex:1 0 40%;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.btn:hover {
+    background:#3399ff;
+    color:black;
+    transform:scale(1.05);
+    box-shadow:0 0 15px #3399ff88;
+}
 
-    .links {
-        width: 100%;
-        max-width: 420px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
+/* Spotify */
+.spotify-card {
+    background:#102b45;
+    border-radius:20px;
+    padding:20px;
+    width:100%;
+    max-width:380px;
+    margin-top:25px;
+    display:flex;
+    gap:12px;
+    border:1px solid #1DB954;
+    box-shadow:0 0 20px #3399ff44;
+    transition:0.3s;
+}
+.spotify-card:hover { transform:translateY(-3px); }
 
-    .btn {
-        width: 100%;
-        padding: 16px;
-        text-align: center;
-        background: #111;
-        border-radius: 14px;
-        font-size: 16px;
-        text-decoration: none;
-        color: white;
-        border: 1px solid #00ff88;
-        transition: 0.2s;
-    }
+.spotify-cover img {
+    width:80px;
+    height:80px;
+    border-radius:12px;
+    object-fit:cover;
+}
 
-    .btn:hover {
-        background: #00ff88;
-        color: black;
-        transform: scale(1.03);
-        box-shadow: 0 0 20px #00ff88;
-    }
+.s-info { display:flex; flex-direction:column; justify-content:center; flex:1; }
+.s-title { font-size:15px; font-weight:bold; color:#fff; }
+.s-artist { font-size:12px; opacity:0.8; margin-top:3px; }
+.progress-bar { width:100%; height:5px; background:#0b1a2a; border-radius:10px; overflow:hidden; margin-top:6px; }
+.progress { height:100%; background:#1DB954; width:0%; transition:width 0.2s; }
+.time { font-size:11px; opacity:0.6; margin-top:4px; display:flex; justify-content:space-between; }
 
-    /* Spotify Card */
-    .spotify-card {
-        background: #111;
-        border-radius: 20px;
-        padding: 20px;
-        width: 100%;
-        max-width: 420px;
-        margin-top: 30px;
-        display: flex;
-        gap: 15px;
-        border: 1px solid #1DB954;
-        box-shadow: 0 0 25px #1DB95444;
-        animation: pulse 4s infinite ease-in-out;
-    }
+/* Badges */
+.badges { display:flex; justify-content:center; gap:5px; margin-bottom:8px; }
+.badge img { width:18px; height:18px; }
 
-    @keyframes pulse {
-        0% { box-shadow: 0 0 25px #1DB95444; }
-        50% { box-shadow: 0 0 40px #1DB954; }
-        100% { box-shadow: 0 0 25px #1DB95444; }
-    }
-
-    .spotify-cover img {
-        width: 90px;
-        height: 90px;
-        border-radius: 12px;
-        object-fit: cover;
-    }
-
-    .s-info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .s-title {
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .s-artist {
-        font-size: 13px;
-        opacity: 0.7;
-        margin-top: 4px;
-    }
-
-    .status {
-        margin-top: 15px;
-        opacity: 0.7;
-        font-size: 14px;
-    }
 </style>
 </head>
 <body>
 
-<div class="pfp">
-    <img id="avatar" src="">
-</div>
-
+<div class="pfp"><img id="avatar" src=""></div>
 <h1 id="username">Loading...</h1>
+<div class="badges" id="badges"></div>
 <div class="tag" id="discord-status">Checking status...</div>
 
 <div class="links">
-    <a class="btn" href="https://discord.com/users/1033745912071192688">Discord</a>
-    <a class="btn" href="https://open.spotify.com/user/">Spotify Profile</a>
+    <a class="btn" href="https://discord.com/users/1033745912071192688" target="_blank">Discord</a>
+    <a class="btn" href="https://open.spotify.com/user/" target="_blank">Spotify Profile</a>
     <a class="btn" href="#">TikTok</a>
     <a class="btn" href="#">Instagram</a>
 </div>
 
 <div id="spotify-box"></div>
 
-
 <script>
-    const USER_ID = "1033745912071192688"; // <--- HIER EINTRAGEN!!!
+const USER_ID = "1033745912071192688";
 
-    async function updateLanyard() {
+async function updateLanyard() {
+    try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
         const data = await res.json();
-
-        if (!data.success) return;
+        if(!data.success) return;
 
         const d = data.data;
-        
+
         // Avatar
-        document.getElementById("avatar").src =
-            `https://cdn.discordapp.com/avatars/${USER_ID}/${d.discord_user.avatar}.png?size=512`;
+        document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${USER_ID}/${d.discord_user.avatar}.png?size=512`;
 
         // Username
         document.getElementById("username").innerText = d.discord_user.username;
 
-        // Discord Status
-        let statusText = {
-            online: "🟢 Online",
-            idle: "🌙 Idle",
-            dnd: "⛔ Do Not Disturb",
-            offline: "⚫ Offline"
-        };
+        // Status
+        const statusText = { online:"🟢 Online", idle:"🌙 Idle", dnd:"⛔ Do Not Disturb", offline:"⚫ Offline" };
         document.getElementById("discord-status").innerText = statusText[d.discord_status];
 
-        // Spotify
-        if (d.spotify) {
-            const s = d.spotify;
+        // Badges
+        const badgesDiv = document.getElementById("badges");
+        badgesDiv.innerHTML = "";
+        if(d.discord_user.flags) {
+            const flags = d.discord_user.flags;
+            const badgeURLs = {
+                1:"https://cdn.discordapp.com/badges/discord_employee.png", 
+                2:"https://cdn.discordapp.com/badges/partner.png",
+                3:"https://cdn.discordapp.com/badges/hypesquad.png"
+            };
+            for(const key in badgeURLs) {
+                if(flags & key) {
+                    const img = document.createElement("img");
+                    img.src = badgeURLs[key];
+                    img.classList.add("badge");
+                    badgesDiv.appendChild(img);
+                }
+            }
+        }
 
-            document.getElementById("spotify-box").innerHTML = `
+        // Spotify
+        const spotifyBox = document.getElementById("spotify-box");
+        if(d.spotify) {
+            const s = d.spotify;
+            const start = s.timestamps?.start;
+            const end = s.timestamps?.end;
+            const progressPercent = (start && end) ? ((Date.now()-start)/(end-start))*100 : 0;
+            const currentSeconds = start ? Math.floor((Date.now()-start)/1000) : 0;
+            const totalSeconds = end ? Math.floor((end-start)/1000) : 0;
+
+            spotifyBox.innerHTML = `
                 <div class="spotify-card">
-                    <div class="spotify-cover">
-                        <img src="${s.album_art_url}">
-                    </div>
+                    <div class="spotify-cover"><img src="${s.album_art_url}"></div>
                     <div class="s-info">
                         <div class="s-title">${s.song}</div>
                         <div class="s-artist">${s.artist}</div>
+                        <div class="progress-bar"><div class="progress" style="width:${progressPercent}%;"></div></div>
+                        <div class="time"><span>${formatTime(currentSeconds)}</span><span>${formatTime(totalSeconds)}</span></div>
                     </div>
                 </div>
             `;
-        } else {
-            document.getElementById("spotify-box").innerHTML = `
-                <div class="spotify-card">
-                    <div class="s-info">
-                        <div class="s-title">Not listening to Spotify</div>
-                        <div class="s-artist">–</div>
-                    </div>
-                </div>
-            `;
-        }
-    }
+        } else { spotifyBox.innerHTML=""; }
 
-    updateLanyard();
-    setInterval(updateLanyard, 3000); // Refresh every 3 seconds
+    } catch(err){ console.error(err); }
+}
+
+function formatTime(sec){
+    const m=Math.floor(sec/60);
+    const s=sec%60;
+    return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+updateLanyard();
+setInterval(updateLanyard,1000);
 </script>
 
 </body>
