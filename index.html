@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ben Dashboard</title>
+<title>Ben.Dev</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
@@ -16,12 +16,10 @@ body {
     flex-direction:column;
     align-items:center;
     padding:40px 10px;
-    transition: background 0.3s;
 }
 
 .pfp {
-    width: 120px;
-    height: 120px;
+    width:120px; height:120px;
     border-radius:50%;
     overflow:hidden;
     margin-bottom:15px;
@@ -29,7 +27,6 @@ body {
     animation: glow 3s infinite alternate;
 }
 .pfp img { width:100%; height:100%; object-fit:cover; }
-
 @keyframes glow {
     0% { box-shadow:0 0 15px #3399ff44; }
     50% { box-shadow:0 0 35px #3399ff; }
@@ -47,7 +44,6 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
     max-width:380px;
     margin-top:10px;
 }
-
 .btn {
     padding:10px 14px;
     text-align:center;
@@ -59,16 +55,8 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
     border:1px solid #3399ff;
     transition:0.3s;
     flex:1 0 40%;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    overflow:hidden;
 }
-.btn:hover {
-    background:#3399ff;
-    color:black;
-    transform:scale(1.05);
-    box-shadow:0 0 15px #3399ff88;
-}
+.btn:hover { background:#3399ff; color:black; transform:scale(1.05); box-shadow:0 0 15px #3399ff88; }
 
 /* Spotify */
 .spotify-card {
@@ -86,14 +74,7 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
     align-items:center;
 }
 .spotify-card:hover { transform:translateY(-3px); }
-
-.spotify-cover img {
-    width:60px;
-    height:60px;
-    border-radius:12px;
-    object-fit:cover;
-}
-
+.spotify-cover img { width:60px; height:60px; border-radius:12px; object-fit:cover; }
 .s-info { display:flex; flex-direction:column; justify-content:center; flex:1; }
 .s-title { font-size:15px; font-weight:bold; color:#fff; display:flex; align-items:center; gap:6px; }
 .s-artist { font-size:12px; opacity:0.8; margin-top:3px; }
@@ -102,9 +83,8 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
 .time { font-size:11px; opacity:0.6; margin-top:4px; display:flex; justify-content:space-between; align-items:center; }
 
 /* Badges */
-.badges { display:flex; justify-content:center; gap:5px; margin-bottom:8px; }
+.badges { display:flex; justify-content:center; gap:5px; margin-bottom:8px; flex-wrap:wrap; }
 .badge img { width:20px; height:20px; }
-
 .spotify-logo { width:16px; height:16px; }
 </style>
 </head>
@@ -127,6 +107,19 @@ h1 { font-size:26px; margin:8px 0; font-weight:800; text-align:center; }
 <script>
 const USER_ID = "1033745912071192688";
 
+const BADGES = {
+    1:"https://cdn.discordapp.com/badges/discord_employee.png",
+    2:"https://cdn.discordapp.com/badges/partner.png",
+    4:"https://cdn.discordapp.com/badges/hypesquad_balance.png",
+    8:"https://cdn.discordapp.com/badges/hypesquad_brilliance.png",
+    64:"https://cdn.discordapp.com/badges/hypesquad_bravery.png",
+    512:"https://cdn.discordapp.com/badges/bug_hunter_level_1.png",
+    16384:"https://cdn.discordapp.com/badges/bug_hunter_level_2.png",
+    131072:"https://cdn.discordapp.com/badges/early_supporter.png",
+    262144:"https://cdn.discordapp.com/badges/verified_bot.png",
+    4194304:"https://cdn.discordapp.com/badges/early_verified_bot_developer.png"
+};
+
 async function updateLanyard() {
     try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
@@ -134,54 +127,61 @@ async function updateLanyard() {
         if(!data.success) return;
 
         const d = data.data;
-
-        // Avatar
         document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${USER_ID}/${d.discord_user.avatar}.png?size=512`;
-
-        // Username
         document.getElementById("username").innerText = d.discord_user.username;
 
-        // Status
-        const statusText = { online:"🟢 Online", idle:"🌙 Idle", dnd:"⛔ Do Not Disturb", offline:"⚫ Offline" };
-        document.getElementById("discord-status").innerText = statusText[d.discord_status];
+        // Status + Plattformen
+        const statusText = { online:"🟢 Online", idle:"🌙 Idle", dnd:"⛔ DND", offline:"⚫ Offline" };
+        let platform = [];
+        if(d.active_on_discord_web) platform.push("Web");
+        if(d.active_on_discord_desktop) platform.push("Desktop");
+        if(d.active_on_discord_mobile) platform.push("Mobile");
+        document.getElementById("discord-status").innerText = statusText[d.discord_status] + (platform.length? " • "+platform.join(", "): "");
 
         // Badges
         const badgesDiv = document.getElementById("badges");
         badgesDiv.innerHTML = "";
-        if(d.discord_user.flags) {
-            const flags = d.discord_user.flags;
-            const badgeURLs = {
-                1:"https://cdn.discordapp.com/badges/discord_employee.png", 
-                2:"https://cdn.discordapp.com/badges/partner.png",
-                4:"https://cdn.discordapp.com/badges/hypesquad_balance.png",
-                8:"https://cdn.discordapp.com/badges/hypesquad_brilliance.png",
-                64:"https://cdn.discordapp.com/badges/hypesquad_bravery.png"
-            };
-            for(const key in badgeURLs) {
-                if(flags & key) {
-                    const img = document.createElement("img");
-                    img.src = badgeURLs[key];
-                    img.classList.add("badge");
-                    badgesDiv.appendChild(img);
-                }
+        let flags = d.discord_user.public_flags || 0;
+        if(d.activities && d.activities.length>0){
+            d.activities.forEach(a=>{
+                if(a.flags) flags |= a.flags;
+            });
+        }
+        for(const key in BADGES){
+            if(flags & key){
+                const img=document.createElement("img");
+                img.src=BADGES[key];
+                img.classList.add("badge");
+                badgesDiv.appendChild(img);
             }
+        }
+
+        // Primary Guild Badge
+        if(d.discord_user.primary_guild && d.discord_user.primary_guild.badge){
+            const img=document.createElement("img");
+            img.src="https://cdn.discordapp.com/icons/"+d.discord_user.primary_guild.identity_guild_id+"/"+d.discord_user.primary_guild.badge+".png?size=64";
+            img.classList.add("badge");
+            badgesDiv.appendChild(img);
         }
 
         // Spotify
         const spotifyBox = document.getElementById("spotify-box");
-        if(d.spotify) {
-            const s = d.spotify;
-            const start = s.timestamps?.start;
-            const end = s.timestamps?.end;
-            const progressPercent = (start && end) ? ((Date.now()-start)/(end-start))*100 : 0;
-            const currentSeconds = start ? Math.floor((Date.now()-start)/1000) : 0;
-            const totalSeconds = end ? Math.floor((end-start)/1000) : 0;
+        if(d.spotify){
+            const s=d.spotify;
+            const start=s.timestamps?.start;
+            const end=s.timestamps?.end;
+            const progressPercent=(start&&end)?((Date.now()-start)/(end-start))*100:0;
+            const currentSeconds=start?Math.floor((Date.now()-start)/1000):0;
+            const totalSeconds=end?Math.floor((end-start)/1000):0;
 
-            spotifyBox.innerHTML = `
+            spotifyBox.innerHTML=`
                 <div class="spotify-card">
                     <div class="spotify-cover"><img src="${s.album_art_url}"></div>
                     <div class="s-info">
-                        <div class="s-title"><img class="spotify-logo" src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo">${s.song}</div>
+                        <div class="s-title">
+                            <img class="spotify-logo" src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo">
+                            ${s.song}
+                        </div>
                         <div class="s-artist">${s.artist}</div>
                         <div class="progress-bar"><div class="progress" style="width:${progressPercent}%;"></div></div>
                         <div class="time"><span>${formatTime(currentSeconds)}</span><span>${formatTime(totalSeconds)}</span></div>
@@ -202,6 +202,5 @@ function formatTime(sec){
 updateLanyard();
 setInterval(updateLanyard,1000);
 </script>
-
 </body>
 </html>
