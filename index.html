@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Guns.lol Style Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {
+        margin: 0;
+        background: #0a0a0a;
+        font-family: 'Inter', sans-serif;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 10px;
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pfp {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 0 0 25px #00ff8899;
+        margin-bottom: 20px;
+        animation: glow 3s infinite alternate;
+    }
+
+    @keyframes glow {
+        from { box-shadow: 0 0 15px #00ff8844; }
+        to { box-shadow: 0 0 35px #00ff88; }
+    }
+
+    .pfp img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    h1 {
+        margin: 10px 0;
+        font-size: 28px;
+        text-align: center;
+        font-weight: 800;
+    }
+
+    .tag {
+        opacity: 0.7;
+        margin-bottom: 25px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .links {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 16px;
+        text-align: center;
+        background: #111;
+        border-radius: 14px;
+        font-size: 16px;
+        text-decoration: none;
+        color: white;
+        border: 1px solid #00ff88;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        background: #00ff88;
+        color: black;
+        transform: scale(1.03);
+        box-shadow: 0 0 20px #00ff88;
+    }
+
+    /* Spotify Card */
+    .spotify-card {
+        background: #111;
+        border-radius: 20px;
+        padding: 20px;
+        width: 100%;
+        max-width: 420px;
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        border: 1px solid #1DB954;
+        box-shadow: 0 0 25px #1DB95444;
+        animation: pulse 4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 25px #1DB95444; }
+        50% { box-shadow: 0 0 40px #1DB954; }
+        100% { box-shadow: 0 0 25px #1DB95444; }
+    }
+
+    .spotify-cover img {
+        width: 90px;
+        height: 90px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .s-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .s-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .s-artist {
+        font-size: 13px;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+
+    .status {
+        margin-top: 15px;
+        opacity: 0.7;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body>
+
+<div class="pfp">
+    <img id="avatar" src="">
+</div>
+
+<h1 id="username">Loading...</h1>
+<div class="tag" id="discord-status">Checking status...</div>
+
+<div class="links">
+    <a class="btn" href="https://discord.com/users/1033745912071192688">Discord</a>
+    <a class="btn" href="https://open.spotify.com/user/">Spotify Profile</a>
+    <a class="btn" href="#">TikTok</a>
+    <a class="btn" href="#">Instagram</a>
+</div>
+
+<div id="spotify-box"></div>
+
+
+<script>
+    const USER_ID = "1033745912071192688"; // <--- HIER EINTRAGEN!!!
+
+    async function updateLanyard() {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`);
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        const d = data.data;
+        
+        // Avatar
+        document.getElementById("avatar").src =
+            `https://cdn.discordapp.com/avatars/${USER_ID}/${d.discord_user.avatar}.png?size=512`;
+
+        // Username
+        document.getElementById("username").innerText = d.discord_user.username;
+
+        // Discord Status
+        let statusText = {
+            online: "🟢 Online",
+            idle: "🌙 Idle",
+            dnd: "⛔ Do Not Disturb",
+            offline: "⚫ Offline"
+        };
+        document.getElementById("discord-status").innerText = statusText[d.discord_status];
+
+        // Spotify
+        if (d.spotify) {
+            const s = d.spotify;
+
+            document.getElementById("spotify-box").innerHTML = `
+                <div class="spotify-card">
+                    <div class="spotify-cover">
+                        <img src="${s.album_art_url}">
+                    </div>
+                    <div class="s-info">
+                        <div class="s-title">${s.song}</div>
+                        <div class="s-artist">${s.artist}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            document.getElementById("spotify-box").innerHTML = `
+                <div class="spotify-card">
+                    <div class="s-info">
+                        <div class="s-title">Not listening to Spotify</div>
+                        <div class="s-artist">–</div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    updateLanyard();
+    setInterval(updateLanyard, 3000); // Refresh every 3 seconds
+</script>
+
+</body>
+</html>
